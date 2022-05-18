@@ -104,6 +104,7 @@ void *user()
 
 void *shell()
 {
+	/* 
 	char *shell = getenv("SHELL");
 	char *slash = strrchr(shell, '/');
 	if (slash) {
@@ -111,6 +112,12 @@ void *shell()
 	}
 	shellname = shell;
 	return NULL;
+	*/
+	// The only shell you'll ever need
+	char normal_fish[] = { 0xF0, 0x9F, 0x90, 0x9F, 0x0 };
+	char tropical_fish[] = { 0xF0, 0x9F, 0x90, 0xA0, 0x0 };
+	shellname = (char *)malloc(strlen(normal_fish)+1);
+	strcpy(shellname, normal_fish);
 }
 
 void *os()
@@ -153,6 +160,7 @@ void *os()
 		if (osname == NULL)
 			osname = malloc(512);
 		strcpy(osname, newContents);
+		//strcpy(osname, "Gentoo");
 		free(newContents);
 		/* end */
 		if (strncmp(osname, "Alpine Linux", 12) == 0) {
@@ -167,14 +175,14 @@ void *os()
 			info.getPkgCount =
 				"grep 'P:' /lib/apk/db/installed | wc -l";
 		} else if (strncmp(osname, "Arch Linux", 10) == 0) {
-			info.col1 = BCYAN "";
-			info.col2 = BCYAN "      /\\      ";
-			info.col3 = BCYAN "     /  \\     ";
-			info.col4 = BCYAN "    /\\   \\    ";
-			info.col5 = BCYAN "   /      \\   ";
-			info.col6 = BCYAN "  /   ,,   \\  ";
-			info.col7 = BCYAN " /   |  |  -\\ ";
-			info.col8 = BCYAN "/_-''    ''-_\\\n";
+			info.col1 = BCYAN "      /\\    \n" BBLUE;
+			info.col2 = BCYAN "     /  \\     " BBLUE;
+			info.col3 = BCYAN "    /\\   \\    " BBLUE;
+			info.col4 = BCYAN "   /      \\   " BBLUE;
+			info.col5 = BCYAN "  /   ,,   \\  " BBLUE;
+			info.col6 = BCYAN " /   |  |  -\\ " BBLUE;
+			info.col7 = BCYAN "/_-''    ''-_\\" BBLUE;
+			info.col8 = BCYAN " ";
 			info.getPkgCount = "pacman -Qq | wc -l";
 		} else if (strncmp(osname, "Arch bang Linux", 15) ==
 				0) {
@@ -562,6 +570,6 @@ int main()
 
 	pthread_create(&threads[5], NULL, colourDraw, NULL);
 	pthread_join(threads[5], NULL);
-	printf("%s", RESET);
+	printf("%s\n", RESET);
 	return 0;
 }
